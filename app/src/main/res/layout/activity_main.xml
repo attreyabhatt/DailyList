@@ -11,23 +11,22 @@
         android:layout_height="match_parent" />
 
     <ImageView
-        android:layout_centerHorizontal="true"
-        android:layout_margin="95dp"
         android:id="@+id/iv_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="95dp"
         android:src="@drawable/logo" />
 
     <Button
-        android:layout_centerHorizontal="true"
         android:id="@+id/btn_makelist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_logo"
+        android:layout_centerHorizontal="true"
         android:layout_margin="24dp"
         android:background="@drawable/bg_btn_add_it"
         android:fontFamily="sans-serif-thin"
-        android:paddingBottom="8dp"
         android:paddingLeft="60dp"
         android:paddingRight="60dp"
         android:text="Make a list"
