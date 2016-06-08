@@ -31,6 +31,6 @@
         android:paddingRight="60dp"
         android:text="Make a list"
         android:textAllCaps="false"
-        android:textSize="28sp" />
+        android:textSize="22sp" />
 
 </RelativeLayout>

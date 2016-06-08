@@ -14,9 +14,11 @@ import in.attreya.dailylist.beans.Daily;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
+//TODO Make transition between activities smoother
+
 public class MainActivity extends AppCompatActivity {
 
-   RealmResults<Daily> r;
+    RealmResults<Daily> r;
     Realm thisRealm;
     Button btn_add;
     String TAG = "yolo";
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG,"OnCreate");
+        Log.d(TAG, "OnCreate");
         setContentView(R.layout.activity_main);
         btn_add = (Button) findViewById(R.id.btn_makelist);
 
@@ -32,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         r = thisRealm.where(Daily.class).findAll();
         int l = r.size();
 
-        if (l != 0) {
-            Intent i = new Intent(MainActivity.this, TestActivity.class);
+        if (l == 1) {
+            Intent i = new Intent(MainActivity.this, ShowActivity.class);
             startActivity(i);
         }
 
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         showDialogAdd();
     }
 
-    private void showDialogAdd() {
+    public void showDialogAdd() {
         DialogAdd dialog = new DialogAdd();
         dialog.show(getSupportFragmentManager(), "Add");
     }

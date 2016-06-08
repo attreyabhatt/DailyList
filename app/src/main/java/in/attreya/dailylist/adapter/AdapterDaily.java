@@ -10,19 +10,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import in.attreya.dailylist.R;
+import in.attreya.dailylist.ShowActivity;
 import in.attreya.dailylist.beans.Daily;
+import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class AdapterDaily extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdapterDaily extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SwipeListener {
 
     private LayoutInflater mInflater;
     RealmResults<Daily> mResults;
+    private Realm mRealm;
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
+    private AddListener mAddListener;
+    private Context mContext;
 
-    public AdapterDaily(Context context, RealmResults<Daily> results) {
+
+    public AdapterDaily(Context context, Realm realm, RealmResults<Daily> results) {
         mInflater = LayoutInflater.from(context);
+        mRealm = realm;
         update(results);
+        this.mContext = context;
     }
 
     public void update(RealmResults<Daily> results) {
@@ -30,40 +38,63 @@ public class AdapterDaily extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    public void setAddListener(AddListener Listener) {
+        mAddListener = Listener;
+    }
+
     @Override
-    public HolderDaily onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == TYPE_ITEM) {
             View view = mInflater.inflate(R.layout.single_row, parent, false);
             return new HolderDaily(view);
-        } else if (viewType == TYPE_FOOTER) {
+        } else {
             View view = mInflater.inflate(R.layout.footer, parent, false);
-            return new HolderDaily(view);
+            return new HolderFooter(view);
         }
-        return null;
+
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (mResults == null || position < mResults.size()) {
+        if (position < mResults.size()) {
             return TYPE_ITEM;
         } else {
             return TYPE_FOOTER;
         }
-     }
+    }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HolderDaily) {
             HolderDaily holderdaily = (HolderDaily) holder;
-            Daily data = mResults.get(position);
-            holderdaily.mTxtitem.setText(data.getWhat());
+            if (mResults.get(position).isValid()) {
+                Daily data = mResults.get(position);
+                holderdaily.mTxtitem.setText(data.getWhat());
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return mResults.size()+1;
+        if (mResults == null || mResults.isEmpty()) {
+            return 0;
+        } else {
+            return mResults.size() + 1;
+        }
+    }
+
+    @Override
+    public void onSwipe(int position) {
+        if (position < mResults.size()) {  //So that footer doesn't get swiped
+            mRealm.beginTransaction();
+            mResults.get(position).deleteFromRealm();
+            mRealm.commitTransaction();
+            notifyItemRemoved(position);
+        }
+        if(mContext instanceof ShowActivity){
+            ((ShowActivity)mContext).checkItemCount();
+        }
     }
 
 
@@ -78,13 +109,18 @@ public class AdapterDaily extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public class HolderFooter extends RecyclerView.ViewHolder {
+    public class HolderFooter extends RecyclerView.ViewHolder implements View.OnClickListener {
         Button mFoot;
 
         public HolderFooter(View itemView) {
             super(itemView);
             mFoot = (Button) itemView.findViewById(R.id.btn_footer);
+            mFoot.setOnClickListener(this);
+        }
 
+        @Override
+        public void onClick(View view) {
+            mAddListener.add();
         }
     }
 }

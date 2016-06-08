@@ -4,9 +4,9 @@ import io.realm.RealmObject;
 
 
 public class Daily extends RealmObject {
-    public Daily(String what) {
+    public Daily(String what,boolean completed) {
         this.what = what;
-
+        this.completed = completed;
     }
 
     public String getWhat() {
@@ -21,6 +21,15 @@ public class Daily extends RealmObject {
 
     String what;
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    boolean completed;
 
     public Daily() {
     }

@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/single_row_daily"
-    android:orientation="horizontal"
-    android:padding="22dp">
+    android:padding="14dp">
 
     <TextView
+        android:textColor="@android:color/white"
         android:id="@+id/tv_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_centerVertical="true"
+        android:text="Hello world"
+        android:paddingLeft="10dp"
+         />
 
     <ImageView
         android:id="@+id/iv_status"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_weight="1"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:background="@null"
         android:src="@drawable/ic_check" />
 
 
-</LinearLayout>
+</RelativeLayout>

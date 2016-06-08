@@ -35,11 +35,12 @@
 
     <EditText
         android:id="@+id/et_what"
-        android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/area"
-        android:hint="What is it?" />
+        android:layout_margin="15dp"
+        android:hint="What is it?"
+        android:inputType="textVisiblePassword" />
 
     <ImageButton
         android:id="@+id/ib_add"
