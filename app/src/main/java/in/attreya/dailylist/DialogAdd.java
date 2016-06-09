@@ -60,7 +60,7 @@ public class DialogAdd extends android.support.v4.app.DialogFragment {
     private void Addaction() {
         String data = mWhat.getText().toString();
         realm = Realm.getDefaultInstance();
-        Daily daily = new Daily(data,false);
+        Daily daily = new Daily(data, false);
         realm.beginTransaction();
         realm.copyToRealm(daily);
         realm.commitTransaction();

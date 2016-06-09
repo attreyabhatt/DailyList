@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 
 import com.dgreenhalgh.android.simpleitemdecoration.linear.DividerItemDecoration;
 
@@ -77,6 +78,14 @@ public class ShowActivity extends AppCompatActivity {
         dialog.show(getSupportFragmentManager(), "Addshow");
     }
 
+    public void showDialogMark(int position) {
+        DialogMark dialog = new DialogMark();
+        Bundle bundle = new Bundle();
+        bundle.putInt("POSITION",position);
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), "Addshow");
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -96,5 +105,10 @@ public class ShowActivity extends AppCompatActivity {
             Intent i = new Intent(ShowActivity.this, MainActivity.class);
             startActivity(i);
         }
+    }
+
+    public void onComplete(int position) {
+        Log.d("Attreya", "Pos: "+ position);
+        mAdapter.markComplete(position);
     }
 }

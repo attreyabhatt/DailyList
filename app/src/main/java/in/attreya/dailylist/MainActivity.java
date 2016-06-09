@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         r = thisRealm.where(Daily.class).findAll();
         int l = r.size();
 
-        if (l == 1) {
+        if (l != 0) {
             Intent i = new Intent(MainActivity.this, ShowActivity.class);
             startActivity(i);
         }

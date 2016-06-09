@@ -70,7 +70,8 @@ public class AdapterDaily extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             HolderDaily holderdaily = (HolderDaily) holder;
             if (mResults.get(position).isValid()) {
                 Daily data = mResults.get(position);
-                holderdaily.mTxtitem.setText(data.getWhat());
+                holderdaily.setwhat(data.getWhat());
+                holderdaily.setbackground(data.isCompleted());
             }
         }
     }
@@ -92,13 +93,21 @@ public class AdapterDaily extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mRealm.commitTransaction();
             notifyItemRemoved(position);
         }
-        if(mContext instanceof ShowActivity){
-            ((ShowActivity)mContext).checkItemCount();
+        if (mContext instanceof ShowActivity) {
+            ((ShowActivity) mContext).checkItemCount();
+        }
+    }
+
+    public void markComplete(int position) {
+        if (position < mResults.size()) {
+            mRealm.beginTransaction();
+            mResults.get(position).setCompleted(true);
+            mRealm.commitTransaction();
         }
     }
 
 
-    public class HolderDaily extends RecyclerView.ViewHolder {
+    public class HolderDaily extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mTxtitem;
         ImageView mStatus;
 
@@ -106,6 +115,25 @@ public class AdapterDaily extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView);
             mTxtitem = (TextView) itemView.findViewById(R.id.tv_item);
             mStatus = (ImageView) itemView.findViewById(R.id.iv_status);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            ((ShowActivity) mContext).showDialogMark(getAdapterPosition());
+        }
+
+        public void setwhat(String what) {
+            mTxtitem.setText(what);
+        }
+
+        public void setbackground(boolean completed) {
+            if(completed){
+                mStatus.setImageResource(R.drawable.ic_check);
+            }else{
+                mStatus.setImageResource(R.drawable.ic_minus);
+            }
         }
     }
 
