@@ -6,23 +6,22 @@
     android:padding="14dp">
 
     <TextView
+        android:textSize="18sp"
         android:textColor="@android:color/white"
         android:id="@+id/tv_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:text="Hello world"
         android:paddingLeft="10dp"
          />
 
     <ImageView
         android:id="@+id/iv_status"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@null"
-        android:src="@drawable/ic_check" />
+        android:background="@null" />
 
 
 </RelativeLayout>

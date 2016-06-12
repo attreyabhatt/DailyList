@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_add"
+        android:icon="@drawable/ic_action_add"
+        android:title="Add"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_points"
+        android:icon="@drawable/ic_action_achievement"
+        android:title="Points"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_none"
+        android:title="None" />
+
+    <item
+        android:id="@+id/action_complete"
+        android:title="Complete" />
+    <item
+        android:id="@+id/action_incomplete"
+        android:title="Incomplete" />
+
+</menu>

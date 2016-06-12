@@ -10,6 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.dgreenhalgh.android.simpleitemdecoration.linear.DividerItemDecoration;
 
@@ -28,6 +31,7 @@ public class ShowActivity extends AppCompatActivity {
     AdapterDaily mAdapter;
     Realm showRealm;
     RealmResults<Daily> r;
+    int option = 0;
 
     private AddListener mAddListener = new AddListener() {
         @Override
@@ -58,8 +62,8 @@ public class ShowActivity extends AppCompatActivity {
         Drawable dividerDrawable = ContextCompat.getDrawable(this, R.drawable.divider_sample);
 
         mRecycler.addItemDecoration(new DividerItemDecoration(dividerDrawable));
-        mAdapter = new AdapterDaily(this,showRealm, r);
-
+        mAdapter = new AdapterDaily(this, showRealm, r);
+        mAdapter.setHasStableIds(true);
         mAdapter.setAddListener(mAddListener);
         mRecycler.setAdapter(mAdapter);
 
@@ -81,9 +85,62 @@ public class ShowActivity extends AppCompatActivity {
     public void showDialogMark(int position) {
         DialogMark dialog = new DialogMark();
         Bundle bundle = new Bundle();
-        bundle.putInt("POSITION",position);
+        bundle.putInt("POSITION", position);
         dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "Addshow");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        boolean handle = true;
+        RealmResults<Daily> temp = r;
+        switch (id) {
+            case R.id.action_add:
+                showDialogAdd();
+                break;
+            case R.id.action_points:
+                showPoints();
+                break;
+            case R.id.action_none:
+                option = 0;
+                r = showRealm.where(Daily.class).findAllAsync();
+                r.addChangeListener(mChangeListener);
+                break;
+            case R.id.action_complete:
+                r = showRealm.where(Daily.class).equalTo("completed", true).findAll();
+                if (r.size() != 0) {
+                    r = showRealm.where(Daily.class).equalTo("completed", true).findAllAsync();
+                    r.addChangeListener(mChangeListener);
+                } else {
+                    Toast.makeText(ShowActivity.this, "No item in complete list", Toast.LENGTH_SHORT).show();
+                    r = temp;
+                }
+                break;
+            case R.id.action_incomplete:
+                r = showRealm.where(Daily.class).equalTo("completed", false).findAll();
+                if (r.size() != 0) {
+                    r = showRealm.where(Daily.class).equalTo("completed", false).findAllAsync();
+                    r.addChangeListener(mChangeListener);
+                } else {
+                    Toast.makeText(ShowActivity.this, "No item in incomplete list", Toast.LENGTH_SHORT).show();
+                    r = temp;
+                }
+                break;
+            default:
+                handle = false;
+                break;
+        }
+        return handle;
+    }
+
+    private void showPoints() {
     }
 
     @Override
@@ -101,14 +158,18 @@ public class ShowActivity extends AppCompatActivity {
     public void checkItemCount() {
         //Log.d("Attreya", "checkItemCount: "+ mAdapter.getItemCount());
         // == 2 as lastitem that is swiped + (footer)
-        if(mAdapter.getItemCount() == 2){
+        if (mAdapter.getItemCount() == 2) {
             Intent i = new Intent(ShowActivity.this, MainActivity.class);
             startActivity(i);
         }
     }
 
     public void onComplete(int position) {
-        Log.d("Attreya", "Pos: "+ position);
+        Log.d("Attreya", "Pos: " + position);
         mAdapter.markComplete(position);
+    }
+
+    public int getFilterOption() {
+        return option;
     }
 }

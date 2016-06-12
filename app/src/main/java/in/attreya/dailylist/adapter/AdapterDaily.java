@@ -57,11 +57,21 @@ public class AdapterDaily extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
+
         if (position < mResults.size()) {
             return TYPE_ITEM;
         } else {
             return TYPE_FOOTER;
         }
+
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (position < mResults.size() && mResults.get(position).isValid()) {
+            return mResults.get(position).getNow();
+        }
+        return RecyclerView.NO_ID;
     }
 
     @Override
@@ -129,9 +139,9 @@ public class AdapterDaily extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         public void setbackground(boolean completed) {
-            if(completed){
+            if (completed) {
                 mStatus.setImageResource(R.drawable.ic_check);
-            }else{
+            } else {
                 mStatus.setImageResource(R.drawable.ic_minus);
             }
         }

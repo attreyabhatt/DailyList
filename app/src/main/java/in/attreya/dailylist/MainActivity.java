@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         thisRealm = Realm.getDefaultInstance();
         r = thisRealm.where(Daily.class).findAll();
         int l = r.size();
-
+        //   Log.d(TAG, "onCreate: "+ l);
         if (l != 0) {
             Intent i = new Intent(MainActivity.this, ShowActivity.class);
             startActivity(i);

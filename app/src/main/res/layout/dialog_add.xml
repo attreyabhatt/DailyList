@@ -24,9 +24,10 @@
             android:textSize="18sp" />
 
         <ImageButton
+
             android:id="@+id/ib_close"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_weight="1"
             android:background="@null"
             android:src="@drawable/ic_close" />
