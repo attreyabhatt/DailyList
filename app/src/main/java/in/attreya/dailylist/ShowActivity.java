@@ -1,6 +1,8 @@
 package in.attreya.dailylist;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -32,6 +34,9 @@ public class ShowActivity extends AppCompatActivity {
     Realm showRealm;
     RealmResults<Daily> r;
     int option = 0;
+    int itemsComplete = 0;
+    Context mContext = this.getBaseContext();
+    SharedPreferences sharedpreferences;
 
     private AddListener mAddListener = new AddListener() {
         @Override
@@ -50,12 +55,15 @@ public class ShowActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        showRealm = Realm.getDefaultInstance();
+        r = showRealm.where(Daily.class).findAllAsync();
         setContentView(R.layout.activity_show);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mRecycler = (RecyclerView) findViewById(R.id.rv_list);
 
-        showRealm = Realm.getDefaultInstance();
-        r = showRealm.where(Daily.class).findAllAsync();
+        sharedpreferences = getBaseContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        itemsComplete = sharedpreferences.getInt("task",0);
 
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mRecycler.setLayoutManager(manager);
@@ -141,6 +149,8 @@ public class ShowActivity extends AppCompatActivity {
     }
 
     private void showPoints() {
+        DialogPoint dialog = new DialogPoint();
+        dialog.show(getSupportFragmentManager(), "Addpoints");
     }
 
     @Override
@@ -153,6 +163,7 @@ public class ShowActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         r.removeChangeListener(mChangeListener);
+
     }
 
     public void checkItemCount() {
@@ -161,15 +172,20 @@ public class ShowActivity extends AppCompatActivity {
         if (mAdapter.getItemCount() == 2) {
             Intent i = new Intent(ShowActivity.this, MainActivity.class);
             startActivity(i);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         }
     }
 
     public void onComplete(int position) {
         Log.d("Attreya", "Pos: " + position);
         mAdapter.markComplete(position);
+
     }
 
-    public int getFilterOption() {
-        return option;
+    public void increaseItemsComplete() {
+        itemsComplete++;
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt("task",itemsComplete);
+        editor.commit();
     }
 }

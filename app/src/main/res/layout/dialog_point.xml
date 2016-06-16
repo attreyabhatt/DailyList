@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerVertical="true"
+    android:background="@drawable/dialogback">
+
+    <ImageView
+
+        android:id="@+id/complete_icon"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="90dp"
+        android:layout_marginTop="90dp"
+        android:src="@drawable/complete" />
+
+    <ImageButton
+        android:padding="20dp"
+        android:id="@+id/ib_close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/complete_icon"
+        android:layout_marginRight="40dp"
+        android:background="@null"
+        android:src="@drawable/ic_close" />
+
+    <TextView
+        android:id="@+id/tasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/complete_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+        android:text="tasks completed - 10"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+
+    <TextView
+        android:id="@+id/quote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tasks"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text='"May be an inspiring quote \n inserted here"'
+        android:textSize="20sp" />
+</RelativeLayout>

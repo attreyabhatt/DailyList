@@ -97,6 +97,12 @@ public class AdapterDaily extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onSwipe(int position) {
+
+        if (mContext instanceof ShowActivity) {
+            if(mResults.get(position).isCompleted())
+            ((ShowActivity) mContext).increaseItemsComplete();
+        }
+
         if (position < mResults.size()) {  //So that footer doesn't get swiped
             mRealm.beginTransaction();
             mResults.get(position).deleteFromRealm();
